@@ -38,14 +38,14 @@ class Alt_Apis {
                     return new WP_REST_Response( array('data' => $this->get_data() ) );
                 }else{
                    
-                    $error_response = new WP_Error( 'invalid_secret_key', esc_html__( 'Invalid Secret Key', 'tru-wp-alert' ), ['status' => 401] );
+                    $error_response = new WP_Error( 'invalid_secret_key', esc_html__( 'Invalid Secret Key', 'alertio' ), ['status' => 401] );
                     return rest_ensure_response($error_response);
                 }
 
             }
             
         } else {
-            return new WP_Error( '401', esc_html__( 'Bearer token is missing in the Authorization header.', 'tru-wp-alert' ), ['status' => 401] );
+            return new WP_Error( '401', esc_html__( 'Bearer token is missing in the Authorization header.', 'alertio' ), ['status' => 401] );
             // No valid bearer token found in the Authorization header
         }
     }

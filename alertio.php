@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Alertio
+ * Plugin Name: Alertios
  * Description: Alertio will provides real-time data for WordPress plugins, themes, and components.
  * Plugin URI:  https://mysenseinc.com/
  * Version:     1.0
@@ -19,23 +19,23 @@ define( 'ALT_FILE', __FILE__ );
 define( 'ALT_PATH', plugin_dir_path( ALT_FILE ) );
 define( 'ALT_URL', plugin_dir_url( ALT_FILE ) );
 
-register_activation_hook( ALT_FILE, array( 'Tru_Wp_Alert', 'alt_activate' ) );
-register_deactivation_hook( ALT_FILE, array( 'Tru_Wp_Alert', 'alt_deactivate' ) );
+register_activation_hook( ALT_FILE, array( 'Alertio', 'alt_activate' ) );
+register_deactivation_hook( ALT_FILE, array( 'Alertio', 'alt_deactivate' ) );
 /**
- * Class Tru_Wp_Alert
+ * Class Alertio
  */
-final class Tru_Wp_Alert {
+final class Alertio {
 	/**
 	 * Plugin instance.
 	 *
-	 * @var Tru_Wp_Alert
+	 * @var Alertio
 	 * @access private
 	 */
 	private static $instance = null;
 	/**
 	 * Get plugin instance.
 	 *
-	 * @return Tru_Wp_Alert
+	 * @return Alertio
 	 * @static
 	 */
 	public static function get_instance() {
@@ -57,7 +57,7 @@ final class Tru_Wp_Alert {
         add_action( 'wp_ajax_alt_regenerate_token', array( $this, 'alt_regenerate_token' ) );
     }
     public function alt_regenerate_token(){
-        check_ajax_referer('tra-nonce-submission');
+        check_ajax_referer('alt-nonce-submission');
         $output         = false;
             $encrypt_method = "AES-256-CBC";
             $nonce          = wp_create_nonce(' updates-alert-token ');
@@ -79,20 +79,20 @@ final class Tru_Wp_Alert {
     public function alt_admin_script() {
         $current_screen = get_current_screen();
         $screen_name    = isset( $current_screen->base ) ? esc_html( $current_screen->base ) : '';
-        if ( $screen_name == 'tru-wp-alert' || $screen_name == 'toplevel_page_tru-wp-alert' ) {
+        if ( $screen_name == 'alertio' || $screen_name == 'toplevel_page_alertio' ) {
             wp_enqueue_script( 'alt-settings-js', ALT_URL . 'assets/js/alt-settings.js', array( 'jquery' ), ALT_VERSION, true );
             wp_enqueue_style( 'alt-settings-css', ALT_URL . 'assets/css/alt-settings.css', array(), ALT_VERSION, 'all' );
             wp_localize_script('alt-settings-js', 'alt_object', 
                 array(
                     'alt_ajax_url'          => admin_url( 'admin-ajax.php' ),
-                    'alt_nonce_submission'  => wp_create_nonce( 'tra-nonce-submission' )
+                    'alt_nonce_submission'  => wp_create_nonce( 'alt-nonce-submission' )
                 ));
            
         }
         
     }
     public function alt_template_settings_page( $links ) {
-        $links[] = '<a style="font-weight:bold" href="' . esc_url( get_admin_url( null, 'admin.php?page=tru-wp-alert' ) ) . '">Plugin Settings</a>';
+        $links[] = '<a style="font-weight:bold" href="' . esc_url( get_admin_url( null, 'admin.php?page=alertio' ) ) . '">Plugin Settings</a>';
         return $links;
     }
     
@@ -110,12 +110,14 @@ final class Tru_Wp_Alert {
 	 * Run when activate plugin.
 	 */
 	public static function alt_activate() {
+
 		update_option( 'alt-v', ALT_VERSION );
 		update_option( 'alt-installDate', gmdate( 'Y-m-d h:i:s' ) );
         if ( ! get_option( 'alt_secret_token' ) ) {
-            $bearer_token =  Tru_Wp_Alert::alt_generate_secret_token();
+            $bearer_token =  Alertio::alt_generate_secret_token();
             update_option( 'alt_secret_token', $bearer_token, false );
         }
+        
 	}
     
         /**
@@ -139,7 +141,7 @@ final class Tru_Wp_Alert {
 	public static function alt_deactivate() {
 	}
 }
-function Tru_Wp_Alert() {
-	return Tru_Wp_Alert::get_instance();
+function Alertio() {
+	return Alertio::get_instance();
 }
-Tru_Wp_Alert();
+Alertio();

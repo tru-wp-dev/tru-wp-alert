@@ -1,12 +1,12 @@
 jQuery(document).ready(function($){
 
-    jQuery('.tra-generate-token').on('click',function(){
+    jQuery('.alt-generate-token').on('click',function(){
        
-        jQuery('#tra-popup').show();
+        jQuery('#alt-popup').show();
     });
-    jQuery('.tra-confirm-action').on('click', function() {
+    jQuery('.alt-confirm-action').on('click', function() {
        
-        $('.tra-loader').show();
+        $('.alt-loader').show();
         var request_data = {
             'action':'alt_regenerate_token',
             '_ajax_nonce':alt_object.alt_nonce_submission,
@@ -17,16 +17,16 @@ jQuery(document).ready(function($){
             type: 'POST',
             success: function(response) {
                jQuery('input[name="alt_secret_token"]').val(response.token);
-                $('#tra-popup').hide();
+                $('#alt-popup').hide();
             },
             error: function (error) {
             },
             complete: function(){
-                $('.tra-loader').hide();
+                $('.alt-loader').hide();
             }
         });
     });
-    jQuery('.tra-cancelled-action').on('click', function() {
-        $('#tra-popup').hide();
+    jQuery('.alt-cancelled-action').on('click', function() {
+        $('#alt-popup').hide();
     });
 });

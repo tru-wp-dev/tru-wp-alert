@@ -1,4 +1,4 @@
-.tra-popup {
+.alt-popup {
     display: none;
     position: fixed;
     top: 50%;
@@ -10,7 +10,7 @@
     z-index: 9999;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-.tra-loader {
+.alt-loader {
     display: none;
     border: 16px solid #f3f3f3;
     border-radius: 50%;
@@ -31,3 +31,6 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+  li#toplevel_page_alertio img {
+    width: 57%;
+}
