@@ -136,7 +136,7 @@ class Alt_Apis {
         
         /**
          * Counts
-         * Plugins | Themes | WordPress 
+         * Plugins | Themes | Components 
          * 
          * @return array 
          */

@@ -80,7 +80,7 @@ class Alt_Wp_Settings {
     public function render_settings_page() {
         ?>
         <div class="alt-wrap">
-            <form method="post" action="options.php">
+            <form method="post" action="options.php" class="alt-main-form">
                 <?php settings_fields('alt_settings_group'); ?>
                 <?php do_settings_sections('alertio'); ?>
                 <?php submit_button('Save Settings'); ?>

@@ -20,7 +20,10 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
-   
+  .alt-main-form table.form-table {
+    background-color: white;
+    width: 90%;
+}
   /* Safari */
   @-webkit-keyframes spin {
     0% { -webkit-transform: rotate(0deg); }
@@ -33,4 +36,7 @@
   }
   li#toplevel_page_alertio img {
     width: 57%;
+}
+input.alt-wp-secret,input.alt-dashboard-secret {
+  width: 30%;
 }
