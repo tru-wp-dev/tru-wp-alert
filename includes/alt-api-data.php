@@ -1,7 +1,15 @@
 <?php
+
+/**
+* This file helps to make an API and gives back data about plugins, themes, and components in a JSON format.
+* 
+* includes/alt-apis-data
+*/
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 if(!class_exists('Alt_Apis')){
 class Alt_Apis {
     public function __construct() {
@@ -11,7 +19,7 @@ class Alt_Apis {
     }
     public function alt_connection_api(){
        
-        register_rest_route( 'connection/v1', 'status', array(
+        register_rest_route( 'alertio/v1', 'wpdata', array(
             'methods'  =>'POST',
             'callback' => array($this,'check_connection_status'),
             'permission_callback' => '__return_true',
@@ -28,32 +36,31 @@ class Alt_Apis {
             $bearer_token = trim(str_replace('Bearer', '', $headers['authorization'][0]));
             if ( $bearer_token != get_option('alt_secret_token') ) {
 
-                $error_message = __('Bearer token is wwrong in the Authorization header.','alt');
-                $error_response = new WP_Error( 'wrong_bearer_token', esc_html($error_message), array( 'status' => 401 ) );
-                return  $error_response ;
+                return new WP_Error( 'wrong_bearer_token', esc_html__('Bearer token is wrong in the Authorization header.','alt'), array( 'status' => 401 ) );
+               
             }else{
                 
                 $dashboard_secret_token = $request->get_header('dashboard-secret-token');
-                if($dashboard_secret_token == get_option('alt_dashboard_secret_key')){
-                    return new WP_REST_Response( array('data' => $this->get_data() ) );
+                if( $dashboard_secret_token == get_option('alt_dashboard_secret_key') ){
+
+                    return new WP_REST_Response( array('data' => $this->alt_get_data() ) );
+                    
                 }else{
                    
-                    $error_response = new WP_Error( 'invalid_secret_key', esc_html__( 'Invalid Secret Key', 'alertio' ), ['status' => 401] );
-                    return rest_ensure_response($error_response);
+                   return new WP_Error( 'invalid_secret_key', esc_html__( 'Invalid Secret Key', 'tru-wp-alert' ), ['status' => 401] );
+                    
                 }
 
             }
-            
         } else {
-            return new WP_Error( '401', esc_html__( 'Bearer token is missing in the Authorization header.', 'alertio' ), ['status' => 401] );
-            // No valid bearer token found in the Authorization header
+            return new WP_Error( '401', esc_html__( 'Bearer token is missing in the Authorization header.', 'tru-wp-alert' ), ['status' => 401] );
         }
     }
-    /**
+        /**
          * Counts | Plugins | Themes 
          * @return array 
          */
-        public function get_data() {
+        public function alt_get_data() {
             
             if ( ! function_exists( 'get_plugins' ) ) {
                 require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -92,9 +99,7 @@ class Alt_Apis {
             $data['wordpress']['version'] = $wp_version; 
             $data['plugins']              = $plugins;
             $data['themes']               = $themes;
-            $data['components']           = $this->components();
-            
-           
+            $data['components']           = $this->alt_components();
             return $data;
         }
         /**
@@ -104,7 +109,7 @@ class Alt_Apis {
          * 
          * @return array 
          */
-        public function components() {
+        public function alt_components() {
 
             if ( ! class_exists( 'FLBuilder' ) ) {
                 return array();
@@ -139,7 +144,7 @@ class Alt_Apis {
             $counts = array(
                 'plugins'      => count(get_plugins()),
                 'themes'       => count(get_themes()),
-                'components'   => count($this->components()),
+                'components'   => count($this->alt_components()),
             );
             return $counts;
         }

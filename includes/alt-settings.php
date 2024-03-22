@@ -1,18 +1,27 @@
 <?php
+
+/**
+* This file is used to create settings for plugins.
+* 
+* includes/alt-settings
+*/
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 if(!class_exists('Alt_Wp_Settings')){
 class Alt_Wp_Settings {
     public function __construct() {
-        // Hook the method to add admin menu
+        
         add_action('admin_menu', array($this, 'alt_api_add_admin_menu'));
-        // Hook the method to register settings
         add_action('admin_init', array($this, 'alt_register_custom_settings'));
     }
-
-    // Callback function to add admin menu
+    /**
+     *  Callback function to add admin menu
+     */
     public function alt_api_add_admin_menu() {
+        
         add_menu_page(
             __( 'Alertio', 'alertio' ), // Page title
             'Alertio', // Menu title
@@ -23,8 +32,11 @@ class Alt_Wp_Settings {
         );
     }
 
-    // Callback function to register custom settings
+    /**
+     * Callback function to register custom settings
+     */
     public function alt_register_custom_settings() {
+
         $settings = array(
             'alt_secret_token',
             'alt_dashboard_secret_key'
@@ -43,7 +55,7 @@ class Alt_Wp_Settings {
             'alertio' // Menu slug of the page where the section should be displayed
         );
 
-        // Add your settings field
+        // Add settings field
         add_settings_field(
             'alt_setting_name', // Field ID
             'Wp Secret Token', // Field label
@@ -51,7 +63,8 @@ class Alt_Wp_Settings {
             'alertio', // Menu slug of the page where the field should be displayed
             'alt_settings_section' // Section ID where the field should be displayed
         );
-        // Add your settings field
+
+        // Add settings field
         add_settings_field(
             'alt_dashboard_secret_key', // Field ID
             'Dashboard Secret Token', // Field label
@@ -60,11 +73,13 @@ class Alt_Wp_Settings {
             'alt_settings_section' // Section ID where the field should be displayed
         );
     }
-
-    // Callback function to render the settings page
+    
+    /**
+     * Callback function to render the settings page.
+     */
     public function render_settings_page() {
         ?>
-        <div class="wrap">
+        <div class="alt-wrap">
             <form method="post" action="options.php">
                 <?php settings_fields('alt_settings_group'); ?>
                 <?php do_settings_sections('alertio'); ?>
@@ -74,13 +89,18 @@ class Alt_Wp_Settings {
         <?php
     }
 
-    // Callback function to render the section description
+    /**
+     * Callback function to render the section description
+     */
     public function section_callback() {
-        // echo 'Enter your settings below:';
+        
     }
 
-    // Callback function to render the field input
+    /**
+     * Callback function to render the Wp Secret Token input, Refresh Token.
+     */   
     public function field_callback() {
+
         $setting_value = get_option('alt_secret_token');
         echo '<input type="text" name="alt_secret_token" value="' . esc_attr($setting_value) . '" readonly="true" class="alt-wp-secret">
         <button type="button" class="button button-primary alt-generate-token">Refresh Token</button>';
@@ -92,7 +112,12 @@ class Alt_Wp_Settings {
             <button type="button" class="alt-cancelled-action">No</button>
         </div>';
     }
+
+    /**
+     * Callback function to render the dashboard Secret Token input.
+     */
     public function dashboard_secret_key() {
+
         $setting_value = get_option('alt_dashboard_secret_key');
         echo '<input type="text" name="alt_dashboard_secret_key" value="' . esc_attr($setting_value) . '" class="alt-dashboard-secret">';
     }

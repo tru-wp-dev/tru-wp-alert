@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Alertios
+ * Plugin Name: Alertio
  * Description: Alertio will provides real-time data for WordPress plugins, themes, and components.
  * Plugin URI:  https://mysenseinc.com/
  * Version:     1.0
@@ -50,32 +50,42 @@ final class Alertio {
 	 * @access private
 	 */
 	private function __construct() {
+
         add_filter( 'plugin_action_links_' . plugin_basename( ALT_FILE ), array( $this, 'alt_template_settings_page' ) );
-		// $this->alt_include_file();
 		add_action( 'plugins_loaded', array( $this, 'alt_plugins_loaded' ) );
         add_action( 'admin_enqueue_scripts', array($this, 'alt_admin_script' ) );
         add_action( 'wp_ajax_alt_regenerate_token', array( $this, 'alt_regenerate_token' ) );
-    }
-    public function alt_regenerate_token(){
-        check_ajax_referer('alt-nonce-submission');
-        $output         = false;
-            $encrypt_method = "AES-256-CBC";
-            $nonce          = wp_create_nonce(' updates-alert-token ');
-            $key            = hash('sha256', time() );
-            $iv             = substr(hash('sha256', md5( time() ) ), 0, 16);
-           
-            $output = openssl_encrypt($nonce, $encrypt_method, $key, 0, $iv);
-            $output = base64_encode($output);
-            update_option( 'alt_secret_token', $output, false );
-            $return = array(
-                'token'  => $output,
-                'status'       => 200
-            );
-            wp_send_json($return);
-        
-        wp_die();
 
     }
+
+    /**
+     * This function is used to generate Wp Secret Token.
+     */
+
+    public static function alt_regenerate_token($nonce=''){
+        if( $nonce != 'activated' ){
+            check_ajax_referer('alt-nonce-submission');
+        }
+        $output         = false;
+        $encrypt_method = "AES-256-CBC";
+        $nonce          = wp_create_nonce(' updates-alert-token ');
+        $key            = hash('sha256', time() );
+        $iv             = substr(hash('sha256', md5( time() ) ), 0, 16);
+        $output = openssl_encrypt($nonce, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+        update_option( 'alt_secret_token', $output, false );
+        $return = array(
+            'token'  => $output,
+            'status'       => 200
+        );
+        wp_send_json($return);
+        wp_die();
+    }
+
+    /**
+     * This function is used to add scripts and styles to the admin side.
+     */
+
     public function alt_admin_script() {
         $current_screen = get_current_screen();
         $screen_name    = isset( $current_screen->base ) ? esc_html( $current_screen->base ) : '';
@@ -87,17 +97,19 @@ final class Alertio {
                     'alt_ajax_url'          => admin_url( 'admin-ajax.php' ),
                     'alt_nonce_submission'  => wp_create_nonce( 'alt-nonce-submission' )
                 ));
-           
         }
-        
     }
+
+    /**
+    * This function is used to add plugin settings.
+    */
     public function alt_template_settings_page( $links ) {
         $links[] = '<a style="font-weight:bold" href="' . esc_url( get_admin_url( null, 'admin.php?page=alertio' ) ) . '">Plugin Settings</a>';
         return $links;
     }
     
 	/**
-	 * Code you want to run when all other plugins loaded.
+	 * This function is used to Include settings, api data files.
 	 */
 	function alt_plugins_loaded() {
 		// Require the settings file
@@ -107,35 +119,21 @@ final class Alertio {
 	}   // end of ctla_loaded()
    
 	/**
-	 * Run when activate plugin.
+	 * This function is Run when activate plugin.
 	 */
 	public static function alt_activate() {
 
 		update_option( 'alt-v', ALT_VERSION );
 		update_option( 'alt-installDate', gmdate( 'Y-m-d h:i:s' ) );
         if ( ! get_option( 'alt_secret_token' ) ) {
-            $bearer_token =  Alertio::alt_generate_secret_token();
+
+            $bearer_token =  Alertio::alt_regenerate_token('activated');
             update_option( 'alt_secret_token', $bearer_token, false );
+
         }
         
 	}
-    
-        /**
-         * Generates token string
-         */
-        public static function alt_generate_secret_token() {
-            $output         = false;
-            $encrypt_method = "AES-256-CBC";
-            $nonce          = wp_create_nonce(' updates-alert-token ');
-            $key            = hash('sha256', time() );
-            $iv             = substr(hash('sha256', md5( time() ) ), 0, 16);
-           
-            $output = openssl_encrypt($nonce, $encrypt_method, $key, 0, $iv);
-            $output = base64_encode($output);
-
-            return $output;
-        }
-	/**
+    /**
 	 * Run when deactivate plugin.
 	 */
 	public static function alt_deactivate() {
