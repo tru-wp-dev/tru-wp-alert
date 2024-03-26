@@ -1,12 +1,15 @@
 jQuery(document).ready(function($){
 
     jQuery('.alt-generate-token').on('click',function(){
-       
+        jQuery('body').addClass('alt-open-popup');
         jQuery('#alt-popup').show();
     });
     jQuery('.alt-confirm-action').on('click', function() {
-       
-        $('.alt-loader').show();
+
+        jQuery('.alt-actions').hide();
+        jQuery('.alt-loader').show();
+        jQuery('.alt-pop-msg').hide();
+        jQuery('.alt-pop-msg').after('<div class="alt-generating-msg">Generating Please Wait...........</div>');
         var request_data = {
             'action':'alt_regenerate_token',
             '_ajax_nonce':alt_object.alt_nonce_submission,
@@ -16,13 +19,25 @@ jQuery(document).ready(function($){
             data: request_data,
             type: 'POST',
             success: function(response) {
-               jQuery('input[name="alt_secret_token"]').val(response.token);
-                $('#alt-popup').hide();
+                jQuery('.alt-pop-msg').hide();
+                jQuery('input[name="alt_secret_token"]').val(response.token);
+                jQuery('.alt-loader').hide();
+                jQuery('.alt-generating-msg').hide();
+                jQuery('.alt-actions').hide();
+                
             },
             error: function (error) {
             },
             complete: function(){
-                $('.alt-loader').hide();
+
+                jQuery('h3.alt-pop-msg').after('<div class="alt-success-msg">The WP secret Token has been successfully updated.</div>');
+                setTimeout(function() {
+                    jQuery('.alt-popup').hide();
+                    jQuery('.alt-actions').show();
+                    jQuery('.alt-pop-msg').show();
+                    jQuery('.alt-success-msg').remove();
+                    jQuery('.alt-generating-msg').remove();
+                }, 1000);
             }
         });
     });

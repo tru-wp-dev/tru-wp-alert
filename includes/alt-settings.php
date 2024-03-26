@@ -106,9 +106,11 @@ class Alt_Wp_Settings {
         <button type="button" class="button button-primary alt-generate-token">' . esc_html__('Refresh Token','alt') . '</button></div>';
         echo '<div class="alt-popup" id="alt-popup">
         <div class="alt-loader"></div>
-            <p>Are you sure you want to proceed?</p>
+            <h3 class="alt-pop-msg">' . esc_html__('Are you sure you want to make a new Wp Secret Token ? ','alt') .'</h3>
+            <div class="alt-actions">
             <button type="button" class="alt-confirm-action">' . esc_html__('Yes','alt') . '</button>
             <button type="button" class="alt-cancelled-action">' . esc_html__('No','alt') . '</button>
+            </div>
         </div>';
     }
 

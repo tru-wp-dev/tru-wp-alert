@@ -1,14 +1,17 @@
 .alt-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f9f9f9;
-    padding: 20px;
-    border: 1px solid #ccc;
-    z-index: 9999;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  display: none;
+  border: 1px solid #ccc;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem 1.5rem;
+  max-width: 390px;
+  border-radius: 0.5rem;
+  width: 100%;
 }
 .alt-loader {
     display: none;
@@ -156,7 +159,7 @@ input.alt-wp-secret,input.alt-dashboard-secret {
 .alt-generate-token {
   width: 100px;
 }
-
+ 
 .alt-wp-secret:hover #copy-icon {
   display: inline;
 }
@@ -171,4 +174,51 @@ input.alt-wp-secret,input.alt-dashboard-secret {
 }
 input.alt-wp-secret:hover + .alt-copy-token {
   display: inline;
+}
+ 
+.alt-popup h3 {
+  font-size: 18px;
+  color: #404040;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  max-width: 300px;
+  margin: 20px auto 30px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+.alt-confirm-action {
+  border: none;
+  color: #fff;
+  text-shadow: none;
+  font-size: 16px;
+  font-weight: 700;
+  height: inherit;
+  line-height: inherit;
+  padding: 13px 20px;
+  border-radius: 5px;
+  display: block;
+  background-color: #135e96;
+}
+ 
+.alt-cancelled-action {
+  border: none;
+  color: #333;
+  text-shadow: none;
+  font-size: 16px;
+  font-weight: 700;
+  height: inherit;
+  line-height: inherit;
+  padding: 13px 20px;
+  border-radius: 5px;
+  display: block;
+  margin-left: 20px;
+  background-color: #e1e1e1;
+}
+ 
+.alt-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
