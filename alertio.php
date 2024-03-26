@@ -63,7 +63,7 @@ final class Alertio {
     public static function alt_regenerate_token(){
         
         check_ajax_referer('alt-nonce-submission');
-        $bearer_token =  Alertio::generate_token();
+        $bearer_token =  Alertio::alt_generate_token();
         update_option( 'alt_secret_token', $bearer_token, false );
         $return = array(
             'token'  => $bearer_token,
@@ -121,14 +121,14 @@ final class Alertio {
 		update_option( 'alt-v', ALT_VERSION );
 		update_option( 'alt-installDate', gmdate( 'Y-m-d h:i:s' ) );
         if ( ! get_option( 'alt_secret_token' ) ) {
-            $bearer_token =  Alertio::generate_token();
+            $bearer_token =  Alertio::alt_generate_token();
             update_option( 'alt_secret_token', $bearer_token, false );
         }
     }
     /**
     * Generates token string
     */
-    public static function generate_token() {
+    public static function alt_generate_token() {
 
         $output         = false;
         $encrypt_method = "AES-256-CBC";

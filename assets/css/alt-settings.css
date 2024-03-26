@@ -1,3 +1,8 @@
+/* body{
+  font-family: Arial, Helvetica, sans-serif;
+}
+  */
+ 
 .alt-popup {
     display: none;
     position: fixed;
@@ -39,4 +44,119 @@
 }
 input.alt-wp-secret,input.alt-dashboard-secret {
   width: 30%;
+}
+ 
+.alt-main-form .form-table th {
+  padding: 20px;
+}
+ 
+.alt-main-form .form-table {
+  border: 0;
+}
+ 
+.alt-wrap
+{
+  border-radius: 6px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 31px rgba(44, 50, 63, 0.02);
+  border: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-right: 20px;
+  color: #404040;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+  font-size: 14px;
+}
+/* td button.button.button-primary.alt-generate-token {
+  right: 272px !important;
+} */
+.alt-wrap form.alt-main-form {
+ 
+  margin-right: 20px;
+}
+.alt-main-form h2 {
+  margin: 19px;
+  padding-top: 20px;
+  color: #000;
+  font-size: 22px;
+  line-height: 30px;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-weight: 700;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+}
+.alt-main-form .form-table tr td input[type="text"] {
+  border: 1px solid #e8ebf3;
+  border-radius: 6px;
+  height: 48px;
+  width: 100%;
+  margin: 0;
+  color: #404040;
+  font-size: 18px;
+  font-weight: normal;
+  padding: 0px 20px;
+  background: transparent;
+  max-width: 590px;
+}
+ 
+.alt-main-form .form-table tr
+{
+  border:0;
+}
+ 
+.alt-main-form .form-table  .alt-wp-secret {
+  position: relative;
+}
+ 
+.alt-main-form .form-table  tr td .alt-generate-token {
+  /* position: absolute; */
+  /* right: 0px; */
+  /* z-index: 2; */
+  border: none;
+  top: 15px;
+  height: 47px;
+  cursor: pointer;
+  color: #fff;
+  /* right:290px; */
+  /* transform: translateX(-51%); */
+  transform: translateX(-105%);
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+ 
+.alt-main-form .form-table tr:first-child
+{
+  position: relative;
+}
+ 
+.alt-main-form .form-table td,
+.alt-main-form .form-table th {
+  margin-bottom: 9px;
+  padding: 15px 25px;
+  line-height: 1.3;
+  vertical-align: middle;
+  position: relative;
+}
+ 
+.alt-main-form input#submit {
+  border: none;
+  color: #fff;
+  text-shadow: none;
+  font-size: 16px;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-weight: 700;
+  height: inherit;
+  line-height: inherit;
+  padding: 13px 20px;
+  border-radius: 5px;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  display: block;
+  margin-left: 20px;
+}
+ 
+.alt-generate-token {
+  width: 100px;
 }
