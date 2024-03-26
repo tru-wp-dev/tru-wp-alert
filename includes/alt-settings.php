@@ -102,10 +102,9 @@ class Alt_Wp_Settings {
     public function field_callback() {
 
         $setting_value = get_option('alt_secret_token');
-        echo '<input type="text" name="alt_secret_token" value="' . esc_attr($setting_value) . '" readonly="true" class="alt-wp-secret">
-        <button type="button" class="button button-primary alt-generate-token">' . esc_html__('Refresh Token','alt') . '</button>';
-        echo '
-        <div class="alt-popup" id="alt-popup">
+        echo '<div class="alt-secret-token-wrap"><input type="text" name="alt_secret_token" value="' . esc_attr($setting_value) . '" readonly="true" class="alt-wp-secret">
+        <button type="button" class="button button-primary alt-generate-token">' . esc_html__('Refresh Token','alt') . '</button></div>';
+        echo '<div class="alt-popup" id="alt-popup">
         <div class="alt-loader"></div>
             <p>Are you sure you want to proceed?</p>
             <button type="button" class="alt-confirm-action">' . esc_html__('Yes','alt') . '</button>

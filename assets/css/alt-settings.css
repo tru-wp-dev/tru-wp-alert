@@ -1,8 +1,3 @@
-/* body{
-  font-family: Arial, Helvetica, sans-serif;
-}
-  */
- 
 .alt-popup {
     display: none;
     position: fixed;
@@ -119,6 +114,7 @@ input.alt-wp-secret,input.alt-dashboard-secret {
   color: #fff;
   /* right:290px; */
   /* transform: translateX(-51%); */
+  /* transform: translateX(-105%); */
   transform: translateX(-105%);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
@@ -159,4 +155,20 @@ input.alt-wp-secret,input.alt-dashboard-secret {
  
 .alt-generate-token {
   width: 100px;
+}
+
+.alt-wp-secret:hover #copy-icon {
+  display: inline;
+}
+.alt-copy-token {
+  display: none;
+  position: absolute;
+  top: 13px;
+  left: 384px;
+}
+.alt-secret-token-wrap {
+  position: relative;
+}
+input.alt-wp-secret:hover + .alt-copy-token {
+  display: inline;
 }
