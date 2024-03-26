@@ -18,9 +18,6 @@ define( 'ALT_VERSION', '1.0' );
 define( 'ALT_FILE', __FILE__ );
 define( 'ALT_PATH', plugin_dir_path( ALT_FILE ) );
 define( 'ALT_URL', plugin_dir_url( ALT_FILE ) );
-
-register_activation_hook( ALT_FILE, array( 'Alertio', 'alt_activate' ) );
-register_deactivation_hook( ALT_FILE, array( 'Alertio', 'alt_deactivate' ) );
 /**
  * Class Alertio
  */
@@ -51,6 +48,7 @@ final class Alertio {
 	 */
 	private function __construct() {
 
+        register_activation_hook( ALT_FILE, array($this, 'alt_activate' ) );
         add_filter( 'plugin_action_links_' . plugin_basename( ALT_FILE ), array( $this, 'alt_template_settings_page' ) );
 		add_action( 'plugins_loaded', array( $this, 'alt_plugins_loaded' ) );
         add_action( 'admin_enqueue_scripts', array($this, 'alt_admin_script' ) );
@@ -59,23 +57,16 @@ final class Alertio {
     }
 
     /**
-     * This function is used to generate Wp Secret Token.
+     * This function is used to refresh Wp Secret Token.
      */
 
-    public static function alt_regenerate_token($nonce=''){
-        if( $nonce != 'activated' ){
-            check_ajax_referer('alt-nonce-submission');
-        }
-        $output         = false;
-        $encrypt_method = "AES-256-CBC";
-        $nonce          = wp_create_nonce(' updates-alert-token ');
-        $key            = hash('sha256', time() );
-        $iv             = substr(hash('sha256', md5( time() ) ), 0, 16);
-        $output = openssl_encrypt($nonce, $encrypt_method, $key, 0, $iv);
-        $output = base64_encode($output);
-        update_option( 'alt_secret_token', $output, false );
+    public static function alt_regenerate_token(){
+        
+        check_ajax_referer('alt-nonce-submission');
+        $bearer_token =  Alertio::generate_token();
+        update_option( 'alt_secret_token', $bearer_token, false );
         $return = array(
-            'token'  => $output,
+            'token'  => $bearer_token,
             'status'       => 200
         );
         wp_send_json($return);
@@ -87,6 +78,7 @@ final class Alertio {
      */
 
     public function alt_admin_script() {
+
         $current_screen = get_current_screen();
         $screen_name    = isset( $current_screen->base ) ? esc_html( $current_screen->base ) : '';
         if ( $screen_name == 'alertio' || $screen_name == 'toplevel_page_alertio' ) {
@@ -98,25 +90,28 @@ final class Alertio {
                     'alt_nonce_submission'  => wp_create_nonce( 'alt-nonce-submission' )
                 ));
         }
+
     }
 
     /**
     * This function is used to add plugin settings.
     */
     public function alt_template_settings_page( $links ) {
+
         $links[] = '<a style="font-weight:bold" href="' . esc_url( get_admin_url( null, 'admin.php?page=alertio' ) ) . '">Plugin Settings</a>';
         return $links;
+
     }
     
 	/**
 	 * This function is used to Include settings, api data files.
 	 */
 	function alt_plugins_loaded() {
-		// Require the settings file
+		
 		require ALT_PATH . '/includes/alt-settings.php';
         require ALT_PATH . '/includes/alt-api-data.php';
         
-	}   // end of ctla_loaded()
+	}  
    
 	/**
 	 * This function is Run when activate plugin.
@@ -126,18 +121,26 @@ final class Alertio {
 		update_option( 'alt-v', ALT_VERSION );
 		update_option( 'alt-installDate', gmdate( 'Y-m-d h:i:s' ) );
         if ( ! get_option( 'alt_secret_token' ) ) {
-
-            $bearer_token =  Alertio::alt_regenerate_token('activated');
+            $bearer_token =  Alertio::generate_token();
             update_option( 'alt_secret_token', $bearer_token, false );
-
         }
-        
-	}
+    }
     /**
-	 * Run when deactivate plugin.
-	 */
-	public static function alt_deactivate() {
-	}
+    * Generates token string
+    */
+    public static function generate_token() {
+
+        $output         = false;
+        $encrypt_method = "AES-256-CBC";
+        $nonce          = wp_create_nonce(' updates-alert-token ');
+        $key            = hash('sha256', time() );
+        $iv             = substr(hash('sha256', md5( time() ) ), 0, 16);
+        $output = openssl_encrypt($nonce, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+        return $output;
+
+    }
+    
 }
 function Alertio() {
 	return Alertio::get_instance();

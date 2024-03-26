@@ -141,12 +141,14 @@ class Alt_Apis {
          * @return array 
          */
         public function counts() {
+
             $counts = array(
                 'plugins'      => count(get_plugins()),
                 'themes'       => count(get_themes()),
                 'components'   => count($this->alt_components()),
             );
             return $counts;
+            
         }
 }
 }

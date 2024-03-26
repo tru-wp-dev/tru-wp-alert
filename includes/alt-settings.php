@@ -103,13 +103,13 @@ class Alt_Wp_Settings {
 
         $setting_value = get_option('alt_secret_token');
         echo '<input type="text" name="alt_secret_token" value="' . esc_attr($setting_value) . '" readonly="true" class="alt-wp-secret">
-        <button type="button" class="button button-primary alt-generate-token">Refresh Token</button>';
+        <button type="button" class="button button-primary alt-generate-token">' . esc_html__('Refresh Token','alt') . '</button>';
         echo '
         <div class="alt-popup" id="alt-popup">
         <div class="alt-loader"></div>
             <p>Are you sure you want to proceed?</p>
-            <button type="button" class="alt-confirm-action">Yes</button>
-            <button type="button" class="alt-cancelled-action">No</button>
+            <button type="button" class="alt-confirm-action">' . esc_html__('Yes','alt') . '</button>
+            <button type="button" class="alt-cancelled-action">' . esc_html__('No','alt') . '</button>
         </div>';
     }
 
